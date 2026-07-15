@@ -1,0 +1,46 @@
+pipeline {
+
+    agent {
+        label 'windows local'
+    }
+
+    stages {
+
+        stage('Checkout') {
+            steps {
+                git branch: 'main',
+                    url: 'https://github.com/BuildBuddy50/testjenkins.git'
+            }
+        }
+
+        stage('Verify Checkout') {
+            steps {
+                bat 'dir'
+            }
+        }
+
+        stage('Install Dependencies') {
+            steps {
+                bat 'npm install'
+            }
+        }
+
+        stage('Install Playwright Browsers') {
+            steps {
+                bat 'npx playwright install'
+            }
+        }
+
+        stage('Run Playwright Tests') {
+            steps {
+                bat 'npx playwright test'
+            }
+        }
+
+        stage('Show Report') {
+            steps {
+                bat 'dir playwright-report'
+            }
+        }
+    }
+}
